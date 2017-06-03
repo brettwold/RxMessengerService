@@ -1,0 +1,35 @@
+machine:
+  environment:
+    _JAVA_OPTIONS: "-Xms512m -Xmx2048m"
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+  java:
+    version: openjdk8
+
+dependencies:
+  pre:
+    - echo y | android update sdk --no-ui --all --filter tools,platform-tools,android-25
+    - echo y | android update sdk --no-ui --all --filter build-tools-25.0.2
+    - echo y | android update sdk --no-ui --all --filter android-25
+    - echo y | android update sdk --filter "extra-android-m2repository" --no-ui
+    - echo y | android update sdk --filter "extra-android-support" --no-ui
+    - echo y | android update sdk --filter "extra-google-m2repository" --no-ui
+  cache_directories:
+    - ~/.android
+
+deployment:
+    development:
+        branch: /.*release.*/
+        commands:
+            - ./gradlew assembleRelease
+    feature:
+        branch: /.*feature.*/
+        commands:
+            - ./gradlew assembleDebug
+    production:
+        branch: master
+        commands:
+            - ./gradlew assembleRelease
+
+general:
+  artifacts:
+    - "service/build/reports"
