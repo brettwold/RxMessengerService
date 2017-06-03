@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">RxMessenger Demo Client</string>
+    <string name="message_hint">Type your name</string>
+    <string name="button_send">Send to Server</string>
+</resources>
